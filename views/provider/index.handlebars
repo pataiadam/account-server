@@ -1,0 +1,59 @@
+<style>
+    .example-modal .modal {
+        position: relative;
+        top: auto;
+        bottom: auto;
+        right: auto;
+        left: auto;
+        display: block;
+        z-index: 1;
+    }
+    .example-modal .modal {
+        background: transparent !important;
+    }
+</style>
+
+<section class="content">
+  <div class="row">
+    {{#each providers}}
+        <div class="col-md-6 example-modal">
+            <div class="modal modal-{{#if this.active}}success{{else}}primary{{/if}}">
+                <div class="modal-dialog" style="width: auto">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                           <h4 class="modal-title">{{this.name}}</h4>
+                        </div>
+                        <form method="post" action="provider" class="form-horizontal">
+                          <div class="modal-body">
+
+                                {{#each this.options}}
+                                    <div class="form-group">
+                                        <label for="{{@key}}" class="col-sm-3 control-label">{{@key}}</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control" name="{{@key}}" id="{{@key}}" placeholder="{{@key}}" value="{{this}}">
+                                        </div>
+                                    </div>
+                                {{/each}}
+
+                          </div>
+                          <div class="modal-footer">
+                              <div class="row">
+                                  <div class="col-xs-8">
+                                    <label>
+                                        <input id="activateProviderCB" name="active" type="checkbox" {{#if this.active}}checked=""{{/if}}> Activate
+                                    </label>
+                                  </div>
+                                  <div class="col-xs-4">
+                                      <input name="name" type="hidden" value="{{this.name}}">
+                                      <button type="submit" class="btn btn-{{#if this.active}}success{{else}}primary{{/if}} btn-block btn-flat">Save</button>
+                                  </div>
+                              </div>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+  </div>
+</section>
