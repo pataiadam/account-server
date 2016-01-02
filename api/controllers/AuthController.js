@@ -10,7 +10,12 @@ module.exports = {
                 return res.json(response);
             }
 
-            AuthLog.create({user: user.id, provider: req.body.provider}).exec(function(){});
+            var log = {
+                user: user.id,
+                provider: req.body.provider,
+                app: req.app.id
+            };
+            AuthLog.create(log).exec(function(){});
             response.user=user;
             return res.json(response);
         });

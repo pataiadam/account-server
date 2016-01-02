@@ -104,11 +104,23 @@ passport.auth = function (req, res, next){
     }
 
     if(!provider){
-      return next(new Error('Provider not exists or inactive!'));
+      return next(new Error('Provider does not exists or inactive!'));
     }
 
-    var strategy = provider.strategyName;
-    self.authenticate(strategy, next)(req, res, req.next);
+    App.findOne({appId: req.body.appId}, function (err, app) {
+      if(!!err){
+        return next(err);
+      }
+
+      if(!app){
+        return next(new Error('App does not exists! Add valid appId to request!'));
+      }
+
+      req.app = app;
+
+      var strategy = provider.strategyName;
+      self.authenticate(strategy, next)(req, res, req.next);
+    });
   });
 };
 

@@ -4,5 +4,8 @@ module.exports =  {
   attributes: {
     user: { model: 'User', required: true },
     provider: { type: 'string'},
+    app: {
+      model: 'App'
+    }
   }
 };

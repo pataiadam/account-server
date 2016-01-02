@@ -9,7 +9,7 @@ module.exports = {
                 var lastHour = moment(moment()).add(-1, 'hours').toISOString();
                 AuthLog.find({
                     where: {createdAt: {'>': lastWeek}}
-                }).exec(function(error, weekAuthLogs) {
+                }).populate('app').exec(function(error, weekAuthLogs) {
                     var dayAuthLogs = _.filter(weekAuthLogs, function(n) {
                         return moment(n.createdAt).isAfter(lastDay);
                     });
@@ -18,22 +18,41 @@ module.exports = {
                         return moment(n.createdAt).isAfter(lastHour);
                     });
 
-                    var week =_.reduce(_.groupBy(weekAuthLogs, (log)=>{return log.provider}), function(result, n, key) {
-                        result[key] = result[key] || {};
-                        result[key]['week'] = n.length;
-                        return result;
-                    }, {});
 
-                    var day =_.reduce(_.groupBy(dayAuthLogs, (log)=>{return log.provider}), function(result, n, key) {
-                        result[key]['day'] = n.length;
+                    //TODO: refact
+                    var week =_.reduce(_.groupBy(weekAuthLogs, (log)=>{return log.provider}), function(result, n, key) {
+                        result['provider'][key] = result['provider'][key] || {};
+                        result['provider'][key]['week'] = n.length;
+                        return result;
+                    }, {provider: {}, app: {}});
+
+                    week =_.reduce(_.groupBy(weekAuthLogs, (log)=>{log.app = log.app || {}; return log.app.name}), function(result, n, key) {
+                        result['app'][key] = result['app'][key] || {};
+                        result['app'][key]['week'] = n.length;
                         return result;
                     }, week);
 
-                    var hour =_.reduce(_.groupBy(hourAuthLogs, (log)=>{return log.provider}), function(result, n, key) {
-                        result[key]['hour'] = n.length;
+                    var day =_.reduce(_.groupBy(dayAuthLogs, (log)=>{return log.provider}), function(result, n, key) {
+                        result['provider'][key]['day'] = n.length;
+                        return result;
+                    }, week);
+
+                    day =_.reduce(_.groupBy(dayAuthLogs, (log)=>{log.app = log.app || {}; return log.app.name}), function(result, n, key) {
+                        result['app'][key]['day'] = n.length;
                         return result;
                     }, day);
-                    res.render('dashboard/index', {passportsCount, usersCount, providerStats: hour});
+
+                    var hour =_.reduce(_.groupBy(hourAuthLogs, (log)=>{return log.provider}), function(result, n, key) {
+                        result['provider'][key]['hour'] = n.length;
+                        return result;
+                    }, day);
+
+                    hour =_.reduce(_.groupBy(hourAuthLogs, (log)=>{log.app = log.app || {}; return log.app.name}), function(result, n, key) {
+                        result['app'][key]['hour'] = n.length;
+                        return result;
+                    }, hour);
+
+                    res.render('dashboard/index', {passportsCount, usersCount, stats: hour});
                 });
             });
         });

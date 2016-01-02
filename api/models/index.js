@@ -14,4 +14,7 @@ module.exports = function(orm){
     var AuthLog = Waterline.Collection.extend(require('./AuthLog'));
     orm.loadCollection(AuthLog);
     console.log('AuthLog loaded')
+    var App = Waterline.Collection.extend(require('./App'));
+    orm.loadCollection(App);
+    console.log('App loaded')
 };
