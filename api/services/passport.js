@@ -69,11 +69,12 @@ passport.connect = function (req, query, profile, next) {
 
 passport.loadStrategies = function () {
   var self       = this;
-  Provider.find().exec(function(err, providers){
+  Provider.update({}, {needToReload: false}).exec(function(err, providers){
     if(!!err){
       throw err;
     }
     _.forEach(providers, function(p) {
+      console.log('Provider \''+p.name+'\' loaded')
       p.options['passReqToCallback'] = true;
       var Strategy = require(p.strategyModuleName);
       if(Strategy.hasOwnProperty('Strategy')){

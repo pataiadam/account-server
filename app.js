@@ -36,6 +36,12 @@ orm.initialize(require('./config/orm.js'), function(err, models) {
     });
 
     function capitaliseFirstLetter(string) {
+        //Todo: blee
+        const sfLog = 'log';
+        var indexOfLog = string.indexOf(sfLog, string.length - sfLog.length);
+        if(indexOfLog !== -1){
+            string = string.slice(0, indexOfLog)+'Log';
+        }
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 

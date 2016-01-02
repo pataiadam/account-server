@@ -1,6 +1,7 @@
 var Waterline = require('waterline');
 
 module.exports = function(orm){
+    //TODO khmm..
     var Passport = Waterline.Collection.extend(require('./Passport'));
     orm.loadCollection(Passport);
     console.log('Passport loaded')
@@ -10,4 +11,7 @@ module.exports = function(orm){
     var Provider = Waterline.Collection.extend(require('./Provider'));
     orm.loadCollection(Provider);
     console.log('Provider loaded')
+    var AuthLog = Waterline.Collection.extend(require('./AuthLog'));
+    orm.loadCollection(AuthLog);
+    console.log('AuthLog loaded')
 };

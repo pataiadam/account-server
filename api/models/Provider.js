@@ -7,6 +7,8 @@ module.exports =  {
     protocol: { type: 'string'}, // oauth2
     strategyName: { type: 'string'}, //facebook-token
     strategyModuleName: { type: 'string'}, // passport-facebook-token
-    options: { type: 'json' }
+    options: { type: 'json' },
+    needToReload: { type: 'boolean', 'default': false},
+    requestedPostFields: {type: 'array'}
   }
 };
