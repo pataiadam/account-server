@@ -15,7 +15,29 @@ router.all('*', function (req, res, next) {
     return next();
 });
 
+router.get('*', function (req, res, next) {
+    if(req.originalUrl==='/'){
+        return next();
+    }
+
+    if(req.isAuthenticated()){
+        return next();
+    }
+
+    res.status(404).json({
+        errorCode: 404,
+        message: `${req.originalUrl} not found!`
+    });
+});
+
 router.get('/', function (req, res) {
+    res.render('login', {layout: false});
+});
+router.post('/', passport.authenticate('local', { failureRedirect: '/' }), function(req, res) {
+    res.redirect('/dashboard');
+});
+router.get('/logout', function (req, res) {
+    req.logout();
     res.render('login', {layout: false});
 });
 

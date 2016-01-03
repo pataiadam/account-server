@@ -17,4 +17,7 @@ module.exports = function(orm){
     var App = Waterline.Collection.extend(require('./App'));
     orm.loadCollection(App);
     console.log('App loaded')
+    var Admin = Waterline.Collection.extend(require('./Admin'));
+    orm.loadCollection(Admin);
+    console.log('Admin loaded')
 };

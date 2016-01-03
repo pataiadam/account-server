@@ -82,6 +82,26 @@ passport.loadStrategies = function () {
       }
       self.use(new Strategy(p.options, self.protocols[p.protocol]));
     })
+
+    var LocalStrategy = require('passport-local');
+    self.use(new LocalStrategy({
+          usernameField: 'email',
+          passwordField: 'password',
+          passReqToCallback: true,
+        },
+        function(req, email, password, done) {
+          Admin.findOne({ email }, function (err, admin) {
+            console.log(err, admin)
+            if (err) { return done(err); }
+            if (!admin) { return done(null, false); }
+            if (admin.password !== 'secret') { return done(null, false); }
+            req.logIn(admin, function(err) {
+              if (err) { return done(err); }
+              return done(null, admin);
+            });
+          });
+        }
+    ));
   });
 };
 
@@ -90,7 +110,7 @@ passport.serializeUser(function (user, next) {
 });
 
 passport.deserializeUser(function (id, next) {
-  User.findOne(id, next);
+  Admin.findOne(id, next);
 });
 
 passport.auth = function (req, res, next){

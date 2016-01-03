@@ -19,5 +19,5 @@ module.exports = {
             response.user=user;
             return res.json(response);
         });
-    },
+    }
 };
