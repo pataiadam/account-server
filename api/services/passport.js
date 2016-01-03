@@ -81,8 +81,9 @@ passport.loadStrategies = function () {
         Strategy=Strategy.Strategy;
       }
       self.use(new Strategy(p.options, self.protocols[p.protocol]));
-    })
+    });
 
+    // This is admin interface login strategy
     var LocalStrategy = require('passport-local');
     self.use(new LocalStrategy({
           usernameField: 'email',
@@ -91,10 +92,11 @@ passport.loadStrategies = function () {
         },
         function(req, email, password, done) {
           Admin.findOne({ email }, function (err, admin) {
-            console.log(err, admin)
             if (err) { return done(err); }
             if (!admin) { return done(null, false); }
-            if (admin.password !== 'secret') { return done(null, false); }
+            if (admin.password !== password){ //TODO hash it
+              return done(null, false);
+            }
             req.logIn(admin, function(err) {
               if (err) { return done(err); }
               return done(null, admin);

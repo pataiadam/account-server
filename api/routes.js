@@ -21,13 +21,12 @@ router.get('*', function (req, res, next) {
     }
 
     if(req.isAuthenticated()){
+        res.locals = res.locals || {};
+        res.locals.admin = req.user;
         return next();
     }
 
-    res.status(404).json({
-        errorCode: 404,
-        message: `${req.originalUrl} not found!`
-    });
+    res.redirect('/');
 });
 
 router.get('/', function (req, res) {
@@ -41,14 +40,15 @@ router.get('/logout', function (req, res) {
     res.render('login', {layout: false});
 });
 
-router.post('/auth', AuthController.auth);
-
 router.get('/app', AppController.index);
 
 router.get('/dashboard', DashboardController.index);
 
 router.get('/provider', ProviderController.index);
 router.post('/provider', ProviderController.update);
+
+//API
+router.post('/auth', AuthController.auth);
 
 router.use(function (err, req, res, next) {
     console.log(err);
