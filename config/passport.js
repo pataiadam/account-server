@@ -31,5 +31,16 @@ module.exports = [
       consumerKey: 'your_consumerKey',
       consumerSecret: 'your_consumerSecret'
     }
+  },
+  {
+    name: 'github',
+    protocol: 'oauth2',
+    strategyName: 'github-token',
+    strategyModuleName: 'passport-github-token',
+    requestedPostFields: ['access_token'],
+    options: {
+      clientID: 'your_clientID',
+      clientSecret: 'your_clientSecret'
+    }
   }
 ];

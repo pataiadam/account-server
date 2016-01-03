@@ -2,6 +2,7 @@
 
 var express = require('express');
 var AuthController = require('./controllers/AuthController.js');
+var AppController = require('./controllers/AppController.js');
 var ProviderController = require('./controllers/ProviderController.js');
 var DashboardController = require('./controllers/DashboardController.js');
 var router = express.Router();
@@ -19,6 +20,8 @@ router.get('/', function (req, res) {
 });
 
 router.post('/auth', AuthController.auth);
+
+router.get('/app', AppController.index);
 
 router.get('/dashboard', DashboardController.index);
 

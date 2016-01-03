@@ -20,6 +20,7 @@
     "moment": "^2.10.6",
     "passport": "^0.3.2",
     "passport-facebook-token": "^3.0.6",
+    "passport-github-token": "^2.0.1",
     "passport-google-plus-token": "^2.0.1",
     "passport-google-token": "^0.1.2",
     "passport-twitter-token": "^1.1.0",
